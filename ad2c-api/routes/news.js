@@ -4,7 +4,6 @@ const utils = require('../utils.js')
 const mkdirp = require('async-mkdirp')
 const database = require('../database.js')
 const dir = path.join('.', '.uploads')
-const tmp = path.join('.', '.uploads', 'tmp')
 
 const news = {
 
@@ -63,6 +62,7 @@ const news = {
   async create (request, response, next) {
     const db = database.get()
     const bucket = database.bucket()
+    const ObjectId = require('mongodb').ObjectId
 
     if (typeof request.file === 'undefined') {
       return response.status(422).json({
@@ -73,6 +73,21 @@ const news = {
     }
 
     try {
+
+      let news = {}
+      let date = new Date()
+      const items = await utils.readdirAsync(dir)
+      const data = await fs.createReadStream(path.join(dir, items[0]))
+        .pipe(bucket.openUploadStream(items[0]))
+      news.date = `${date.getMonth()}-${date.getFullYear()}`
+      news.fileId = data.id
+      
+      await db.collection('news').insertOne(
+        {
+          date: news.date,
+          fileId: ObjectId(news.fileId)
+        })
+    
       return response.status(201).json({
         status: 201,
         success: true,
@@ -80,10 +95,9 @@ const news = {
       })
     } catch (err) {
       next(err)
-    }
-    //  finally {
-    //   await utils.removeContentDirectory(dir)
-    // }
+     } finally {
+         await utils.removeContentDirectory(dir)
+       }
   },
 
   async delete (request, response, next) {

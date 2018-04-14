@@ -32,8 +32,7 @@ const database = {
       const db = database.get()
       const collectionsRequired = [
         {name: 'users', func: database.initUsers},
-        {name: 'news', func: database.initNews},
-        {name: 'quotations', func: database.initQuotations}
+        {name: 'news', func: database.initNews}
       ]
 
       db.listCollections().toArray((error, collections) => {
@@ -92,65 +91,15 @@ const database = {
     db.createCollection('news', {validator: {
       $jsonSchema: {
         bsonType: 'object',
+        required: ['date', 'fileId'],
         properties: {
-          content: {
-            bsonType: 'array',
-            items: {
-              bsonType: 'object',
-              properties: {
-                date: {
-                  bsonType: 'string',
-                  description: 'must be a string'
-                },
-                fileId: {
-                  bsonType: 'objectId',
-                  description: 'must be a MongoDB ObjectId'
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-      validationLevel: 'strict',
-      validationAction: 'error'
-    })
-  },
-
-  initQuotations () {
-    const db = database.get()
-
-    db.createCollection('quotations', {validator: {
-      $jsonSchema: {
-        bsonType: 'object',
-        properties: {
-          content: {
-            bsonType: 'array',
-            items: {
-              bsonType: 'object',
-              properties: {
-                name: {
-                  bsonType: 'string',
-                  description: 'must be a string'
-                },
-                email: {
-                  bsonType: 'string',
-                  description: 'must be a string'
-                },
-                date: {
-                  bsonType: 'string',
-                  description: 'must be a string'
-                },
-                content: {
-                  bsonType: 'string',
-                  description: 'must be a string'
-                },
-                fileId: {
-                  bsonType: 'objectId',
-                  description: 'must be a MongoDB ObjectId'
-                }
-              }
-            }
+          date: {
+            bsonType: 'string',
+            description: 'must be a string and is required'
+          },
+          fileId: {
+            bsonType: 'objectId',
+            description: 'must be a objectId and is reqired'
           }
         }
       }

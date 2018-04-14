@@ -1,12 +1,10 @@
 const utils = require('../utils.js')
-const database = require('../database.js')
 const nodemailer = require('nodemailer')
 
 
 const quotations = {
     
   async create (request, response, next) {
-    const db = database.get()
 
     const handlerSerig = {
       pan: "panneaux",
