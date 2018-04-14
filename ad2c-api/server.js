@@ -4,10 +4,11 @@ const bodyParser = require('body-parser')
 const router = require('./routes/router.js')
 const database = require('./database.js')
 const account = require('./account/manager.js')
+const quotations = require('./routes/quotations.js')
 
 const success = '\x1b[32mOK\x1b[0m'
 const failure = '\x1b[31mFAILED\x1b[0m'
-const ad2cApi = '[\x1b[35mAD2C\x1b[0m] '
+const ad2cApi = '[\x1b[35mAD2C\x1b[0m]'
 
 const app = express()
 
@@ -29,6 +30,7 @@ app.use(function(request, response, next) {
 })
 
 // Account management
+app.post('/api.ad2c/quotations', quotations.create)
 app.post('/api.ad2c/register', account.register)
 app.post('/api.ad2c/authorize', account.authorize)
 app.delete('/api.ad2c/delete', account.delete)

@@ -25,8 +25,6 @@ router.get('/api.ad2c/news/:id', news.getOne)
 router.post('/api.ad2c/news', upload.single('file'), news.create)
 router.delete('/api.ad2c/news/:id', news.delete)
 
-router.post('api.ad2c/quotations', quotations.create)
-
 // If no route is matched a '404 Not Found' error is returned.
 router.use(require('../middleware/error.js').notFound)
 

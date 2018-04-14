@@ -80,9 +80,10 @@ const news = {
       })
     } catch (err) {
       next(err)
-    } finally {
-      await utils.removeContentDirectory(dir)
     }
+    //  finally {
+    //   await utils.removeContentDirectory(dir)
+    // }
   },
 
   async delete (request, response, next) {
